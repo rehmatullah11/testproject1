@@ -1,0 +1,45 @@
+<%=render 'shared/page_title', title: "Project Title: #{@project.title.capitalize}"%>
+<hr/>
+<br>
+<h3>Description:</h3>
+<p><%= simple_format(@project.description)%></p>
+<br>
+<p><small>Created By:  <%=@project.creator.name.capitalize%><small></p>
+<%if user_signed_in? && (current_user.usertype == 'manager' && current_user.id == @project.creator_id)%>
+  <div class="text-end">
+    <%=link_to "Edit your Project", edit_project_path, class: "btn btn-primary btn-md btn-xlarge" %>
+    <%=link_to "Delete this Project", project_path(@project), class:"btn btn-primary btn-xs btn-xlarge", 
+                                             data: {"turbo-method": :delete}, method: :delete%>
+  </div>
+<%end%>
+<%if user_signed_in? && current_user.usertype == 'qa'%>
+  <div class="text-center">
+    <%=link_to "Create a Bug", new_project_bug_path(@project), class: "btn btn-primary btn-md btn-xlarge"%>
+  </div>
+<%end%>    
+<br>
+<div class="text-center">
+  <%=link_to "Return to projects listing", projects_path, class: "btn btn-primary btn-md btn-xlarge"%>
+</div>
+<hr/>
+<%if @project.bugs.count != 0 %>
+  <h2 align="center">Bugs created by QA: </h2>
+  <% @project.bugs.each do |bug|%>
+    <br><br>
+    <div class = "row">
+      <div class = "container">
+        <div class = "col-md-12 well">
+          <h4><%=link_to bug.title, project_bug_path(@project, bug)%></h4>
+          <div class = "float-end">
+            <span class = "quiet">
+              Created <%= time_ago_in_words(bug.created_at) %> ago by <%=bug.bug_creator.name.capitalize%>
+            </span>
+          </div>    
+        </div>
+      </div>
+    </div>
+  <%end%>
+<%else%>
+  <h4 align = "center">NO BUGS YET</h4>
+<%end%>
+

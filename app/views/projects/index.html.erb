@@ -1,0 +1,21 @@
+<h1 align = "center">All Projects</h1>
+<% @project.each do |project|%>
+  <br><br>
+  <div class = "row">
+    <div class = "col-md-12">
+      <h4><%=link_to project.title, project_path(project)%></h4>
+      <br>
+      <p>
+        <div class = "float-end"><span class = "quiet"><small>Created <%= time_ago_in_words(project.created_at)%> ago by <%=project.creator.name%></small></span></div>
+      </p>
+      <p>Description: &emsp; <%= truncate(project.description, length: 70)%></p>
+      <%if user_signed_in? && (current_user.usertype == 'manager' && current_user.id == project.creator_id)%>
+        <div class="float-end">
+          <%=link_to "Edit this Project", edit_project_path(project), class: "btn btn-primary btn-md btn-xlarge" %>
+          <%=link_to "Delete this Project", project_path(project), class:"btn btn-primary btn-xs btn-xlarge", 
+                                                    data: {"turbo-method": :delete}, method: :delete%>
+        </div>
+      <%end%>
+    </div>
+  </div>
+<%end%>

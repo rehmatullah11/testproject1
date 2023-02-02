@@ -1,0 +1,69 @@
+<%if @user.usertype == 'manager'%>
+  <%=render 'shared/page_title', title: "#{@user.name.capitalize}'s Projects"%>
+  <hr/><br>
+  <h3>Role: <%= @user.usertype%></h3>
+  <br>
+  <h4 align="center">Projects Created By: <%=@user.name.capitalize%></h4>
+  <% @user_projects.each do |project|%>
+    <br><br>
+    <div class = "row">
+      <div class = "col-md-12 well">
+        <h4><%=link_to project.title, project_path(project)%></h4>
+        <br>
+        <p>
+          <div class = "float-end"><span class = "quiet"><small>Created <%= time_ago_in_words(project.created_at) %> ago by <%=project.creator.name.capitalize%></small></span></div>
+        </p>
+        <p><%=truncate(project.description, length: 70)%></p>
+        <%if user_signed_in? && current_user == project.creator%>
+          <div class = "float-end well1">
+            <%=link_to "Edit this project", edit_project_path(project), class: "btn btn-primary btn-md btn-xlarge" %>
+            <%=link_to "Delete this project", project_path(project), class:"btn btn-primary btn-xs btn-xlarge", 
+                                                      data: {"turbo-method": :delete}, method: :delete%>
+          </div>
+        <%end%>
+      </div>
+    </div>
+  <%end%>
+
+<% elsif @user.usertype == 'developer' %>
+  <%=render 'shared/page_title', title: "#{@user.name.capitalize}'s Bugs"%>
+  <hr/><br>
+  <h3>Role: <%= @user.usertype%></h3>
+  <br>
+  <h5 align = "center">Bugs Issued to: <%=@user.name.capitalize%></h5>
+  <% @user_solbugs.each do |bug|%>
+    <br><br>
+    <div class = "row">
+      <div class = "col-md-12 well">
+        <h4><%=link_to bug.title, project_bug_path(bug.project_id,bug)%></h4>
+        <br>
+        <p>
+          <div class = "float-end"><span class = "quiet"><small>Created <%= time_ago_in_words(bug.created_at) %> ago by <%=bug.bug_creator.name.capitalize%></small></span></div>
+        </p>
+      </div>
+    </div>
+  <%end%>
+
+<%elsif @user.usertype=='qa'%>
+  <%=render 'shared/page_title', title: "#{@user.name.capitalize}'s Bugs"%>
+  <hr/><br>
+  <h3>Role: <%= @user.usertype%></h3>
+  <br>
+  <h5 align="center">Bugs Created By: <%=@user.name.capitalize%></h5>
+  <% @user_createdbugs.each do |bug|%>
+    <br><br>
+    <div class="row">
+      <div class="container">
+        <div class="col-md-10 well">
+          <h4><%=link_to bug.title, project_bug_path(bug.project_id,bug)%></h4>
+          <br>
+          <p>
+            <div class="float-end"><span class="quiet"><small>Created <%= time_ago_in_words(bug.created_at) %> ago by <%=bug.bug_creator.name.capitalize%></small></span></div>
+          </p>
+        </div>
+      </div>
+    </div>
+  <%end%>
+<%end%>
+
+

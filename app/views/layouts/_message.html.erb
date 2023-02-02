@@ -1,0 +1,13 @@
+<div class = "container">
+  <div class = "col-md-10 col-md-offset-4">
+    <div class = "row">
+      <% flash.each do |name, msg|%>
+        <br>
+        <div class="alert alert-<%= name %>">
+          <a href="#" class="close" data-dismiss="alert">&#215;</a>
+          <%= msg %>
+        </div>
+      <%end%>
+    </div>
+  </div>
+</div>

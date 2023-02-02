@@ -1,0 +1,46 @@
+<div class  = "row">
+  <div class = "col-md-12">
+    <%= form_for(@project, :html => {class: "form-horizontal",role: "form"}) do |f|%>
+      <div class = "form-group">
+        <div class = "control-label col-md-8">
+          <%=f.label :title%>
+        </div>
+        <div class = "col-md-10">
+          <%= f.text_field :title, class: "form-control", placeholder: "Enter your title", autofocus: true%>
+        </div>
+      </div>
+      <div class = "form-group">
+        <div class = "control-label col-md-8">
+          <%=f.label :description%>
+        </div>
+        <div class = "col-md-10">
+          <%=f.text_area :description, rows: 10, class: "form-control", placeholder: "Enter description of the project"%>
+        </div>
+      </div>
+      <div class = "form-group">
+        <div class = "control-label col-md-8">
+          <%= f.label :Developers ,"Developer List" %>
+        </div>
+        <div class = "col-md-8">
+          <%# <%= f.select :usertype, ["Manager","Developer","QA"] %> 
+          <%# <%= f.select :user_ids, ["Manager","Developer","QA"] %> 
+           <%=f.select(:user_ids, User.developer.collect{|p|[p.name ,p.id] }, {:prompt=>""}, {:multiple=>true}) %>
+        </div>
+      </div>
+      <div class = "form-group">
+        <div class = "control-label col-md-8">
+          <%=f.label :QA%>
+        </div>
+        <div class = "col-md-8">
+          <%=f.select(:user_ids, User.qa.collect {|p|[p.name, p.id]}, {:prompt=>""}, {:multiple=>true})%>
+        </div>
+      </div>
+      <div class = "form-group">
+        <div class = "col-md-offset-2 col-md-12">
+          <%=f.submit class: "btn btn-primary btn-md btn-xlarge"%>
+          <%=link_to "Return to Projects listing", projects_path, class: "btn btn-primary btn-md btn-xlarge"%>
+        </div>
+      </div>
+    <%end%>
+  </div>
+</div>

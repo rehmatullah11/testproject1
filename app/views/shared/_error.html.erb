@@ -1,0 +1,19 @@
+<% if obj.errors.any? %>
+  <div class="row">
+    <div class="col-md-10 col-md-offset-2">
+      <div class="alert alert-danger" role="alert">
+        <div class="alert-heading">
+          <%= pluralize(obj.errors.count,"error") %>
+          Prohibited this <%=obj.class%> from being saved
+        </div>
+        <div class="alert-body">
+          <ul>
+            <% obj.errors.full_messages.each do |m| %>
+              <li><%= m%></li>
+            <%end%>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div> 
+<% end %>
